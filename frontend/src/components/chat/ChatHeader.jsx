@@ -3,7 +3,7 @@ import { FaEdit } from 'react-icons/fa';
 import { PiList } from 'react-icons/pi';
 import Sidebar from './Sidebar';
 
-export default function Header() {
+export default function ChatHeader() {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <>

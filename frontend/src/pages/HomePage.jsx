@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../components/home/Header';
+import Header from '../components/home/ChatHeader';
 import Sidebar from '../components/home/Sidebar';
 import MainContent from '../components/home/MainContent';
 import ChatSection from '../components/home/ChatSection';

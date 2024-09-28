@@ -1,8 +1,8 @@
 import React from 'react'
-import Sidebar from '../components/home/Sidebar'
-import Header from '../components/home/Header'
-import MainContent from '../components/home/MainContent'
-import ChatSection from '../components/home/ChatSection'
+import ChatHeader from '../components/chat/ChatHeader'
+import Sidebar from '../components/chat/Sidebar'
+import MainContent from '../components/chat/MainContent'
+import ChatSection from '../components/chat/ChatSection'
 
 const ChatPage = () => {
   return (
@@ -12,7 +12,7 @@ const ChatPage = () => {
 
       {/* Main Content */}
       <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out`}>
-        <Header  />
+        <ChatHeader  />
         <MainContent />
         <ChatSection />
       </div>

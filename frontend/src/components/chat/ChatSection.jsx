@@ -11,24 +11,20 @@ const ChatSection = () => {
 
   // Custom prompt for the AI
   const customPrompt =
-    "Provide empathetic advice and use emojis to show encouragement. Say it in 100 words";
+    "Provide empathetic advice and use emojis to show encouragement. Say it in 100 words.";
 
-  // Handle user submitting a message
   const handleSendMessage = async () => {
-    if (!userInput.trim()) return; // Don't send empty messages
+    if (!userInput.trim()) return; 
 
-    // Add user's message to chat history
     setChatHistory((prevChat) => [
       ...prevChat,
       { sender: "user", text: userInput },
     ]);
-
-    setLoading(true); // Show loading indicator for the AI response
+    setLoading(true);
 
     try {
-      const genAI = new GoogleGenerativeAI(
-        "AIzaSyBhz3UhAXZreOyUxnEJ611tE4rmAdZwzIM"
-      );
+      console.log(import.meta.env.GEMINI_API);
+      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
       const model = genAI.getGenerativeModel(
         { model: "tunedModels/mental-health-model-v343l4826azy" },
         {
@@ -42,7 +38,6 @@ const ChatSection = () => {
       const result = await model.generateContent(combinedPrompt);
       const responseText = await result.response.text();
 
-      // Add the AI's response to chat history
       setChatHistory((prevChat) => [
         ...prevChat,
         { sender: "bot", text: responseText },
@@ -59,7 +54,7 @@ const ChatSection = () => {
       ]);
     } finally {
       setLoading(false);
-      setUserInput(""); // Clear user input after sending the message
+      setUserInput(""); 
     }
   };
 
@@ -80,7 +75,7 @@ const ChatSection = () => {
                 : "bg-gray-300 text-gray-800 text-left rounded-tr-xl rounded-bl-xl"
             }`}
           >
-            <ReactQuill value={message.text} readOnly={true} theme="bubble" />
+            <ReactQuill value={message.text} className="text-6xl font-semibold" readOnly={true} theme="bubble" />
           </div>
         ))}
         {loading && (
