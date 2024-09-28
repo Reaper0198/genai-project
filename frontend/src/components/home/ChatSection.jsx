@@ -11,7 +11,7 @@ const ChatSection = () => {
 
   // Custom prompt for the AI
   const customPrompt =
-    "Provide empathetic advice and use emojis to show encouragement.";
+    "Provide empathetic advice and use emojis to show encouragement. Say it in 100 words";
 
   // Handle user submitting a message
   const handleSendMessage = async () => {
