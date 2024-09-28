@@ -10,7 +10,8 @@ const ChatSection = () => {
   const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
 
   // Custom prompt for the AI
-  const customPrompt = "Provide empathetic advice and use emojis to show encouragement.";
+  const customPrompt =
+    "Provide empathetic advice and use emojis to show encouragement.";
 
   // Handle user submitting a message
   const handleSendMessage = async () => {
@@ -29,7 +30,7 @@ const ChatSection = () => {
         "AIzaSyBhz3UhAXZreOyUxnEJ611tE4rmAdZwzIM"
       );
       const model = genAI.getGenerativeModel(
-        { model: "tunedModels/mental-health-model-2-6yzdk8id9dd2" },
+        { model: "tunedModels/mental-health-model-v343l4826azy" },
         {
           temperature: 0.5,
           maxTokens: 100,
