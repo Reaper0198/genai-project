@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from '../components/home/Header';
+import Header from '../components/home/ChatHeader';
 import Sidebar from '../components/home/Sidebar';
 import MainContent from '../components/home/MainContent';
 import ChatSection from '../components/home/ChatSection';
@@ -9,15 +9,7 @@ export default function HomePage() {
 
   return (
     <div className="flex h-screen w-screen bg-gray-900 text-gray-200">
-      {/* Sidebar */}
-      <Sidebar  />
-
-      {/* Main Content */}
-      <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out`}>
-        <Header  />
-        <MainContent />
-        <ChatSection />
-      </div>
+      
     </div>
   );
 }
