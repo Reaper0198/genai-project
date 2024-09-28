@@ -10,13 +10,12 @@ const ChatSection = () => {
   const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
 
   // Custom prompt for the AI
-  const customPrompt = "Provide empathetic advice and use emojis to show encouragement.";
+  const customPrompt =
+    "Provide empathetic advice and use emojis to show encouragement.";
 
-  // Handle user submitting a message
   const handleSendMessage = async () => {
-    if (!userInput.trim()) return; // Don't send empty messages
+    if (!userInput.trim()) return
 
-    // Add user's message to chat history
     setChatHistory((prevChat) => [
       ...prevChat,
       { sender: "user", text: userInput },
@@ -26,10 +25,10 @@ const ChatSection = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(
-        "AIzaSyBhz3UhAXZreOyUxnEJ611tE4rmAdZwzIM"
+        "AIzaSyDU_eOv3wcLPF2DAO1oz8vZkyKpTX0KUW0"
       );
       const model = genAI.getGenerativeModel(
-        { model: "tunedModels/mental-health-model-2-6yzdk8id9dd2" },
+        { model: "tunedModels/mental-health-model-v343l4826azy" },
         {
           temperature: 0.5,
           maxTokens: 100,
