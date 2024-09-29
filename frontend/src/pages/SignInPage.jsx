@@ -21,28 +21,35 @@ const SignInPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
+      toast.error("Please fill in all fields.");
       dispatch(signInFailure("Enter all the fields..."));
       return;
     }
     try {
       dispatch(signInStart());
-      const res = await axios.post("/auth/sign-in", formData);
-      const data = await res.data;
-
+      const res = await axios.post("/auth/sign-in", formData,{withCredentials:true});
+      const data = res.data;
+      console.log(data);
         if (res.status === 200) {
             toast.success("Sign in successful!");
-            dispatch(signInSuccess({username: data.username, email: data.email}));
+            dispatch(signInSuccess(data));
             navigate('/');
         } else {
+          console.log(data);
+          toast.error(data.message);
             dispatch(signInFailure(data.message));
         }
     } catch (err) {
+      toast.error("wrong email or password");
       dispatch(signInFailure(err.message));
     }
+    finally {
+      dispatch(signInFailure(null));
   };
+}
 
   return (
-    <div className='font-serif min-h-screen pt-32 bg-gradient-to-b from-[#fef4ee] to-[#f3e5e2] text-[#012f2c]'>
+    <div className='font-serif flex items-center min-h-screen pt-32 bg-[#f4ded1] text-[#012f2c]'>
       <motion.div 
         initial={{ y: 500 }} 
         animate={{ y: 0 }}
@@ -85,8 +92,6 @@ const SignInPage = () => {
               {loading ? "Loading..." : "Sign In"}
             </button>
             <OAuth />
-
-            {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
           </form>
 
           <div className='text-sm flex gap-2 mt-2'>

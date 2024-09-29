@@ -10,9 +10,21 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    gender: {
+        type: String,
+        
+    },
+    age: {
+        type: Number,
+        
+    },
     password: {
         type: String,
         required: true
+    },
+    isStudent: {
+        type: Boolean,
+        default: true
     },
 }, { timestamps: true });
 const User = new mongoose.model("User", userSchema);

@@ -9,7 +9,7 @@ const HeroBanner = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   return (
-    <div className="bg-[#fef4ee] font-sans pt-28 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-[#f4ded1] font-sans pt-28 min-h-screen flex flex-col items-center justify-center">
       <div className="flex flex-col items-center text-center w-full px-8 max-w-6xl gap-5">
         <div className="mt-10 flex justify-center w-full">
           <img
@@ -42,7 +42,7 @@ const HeroBanner = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300 }}
             type="submit"
-            onClick={() => navigate(currentUser ? "/chat" : "/sign-in")}
+            onClick={() => navigate(currentUser===null ? "/sign-in" :currentUser.gender==="Not specified" || currentUser.age===0 ?  "/profile" : "/chat")}
             className="font-serif bg-gradient-to-r text-2xl from-green-900 to-green-950 text-white py-3 px-6 rounded-full flex items-center justify-center gap-2 font-medium hover:shadow-lg "
           >
             <p>{currentUser ? "Chat Now" : "Get Started"}</p>
