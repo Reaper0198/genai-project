@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use('/api/auth', authRouter);
-app.use('/api/chat', chatRouter);
+//hello from suyash app.use('/api/chat', chatRouter);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';

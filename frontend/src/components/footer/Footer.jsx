@@ -1,7 +1,13 @@
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
+import { useLocation } from "react-router-dom";
 import {Link} from "react-router-dom";
 const Footer = () => {
+  const location = useLocation().pathname.split("/")[1];
+  console.log(location);
+  if (location === "chat") {
+    return null;
+  }
   const handleNewsletterSubmit = () => {
     
   }
