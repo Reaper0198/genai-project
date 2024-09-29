@@ -5,7 +5,7 @@ import { PiList } from 'react-icons/pi';
 export default function Sidebar({ isOpen, setIsOpen }) {
   return (
     <aside
-      className={`w-64 bg-gray-800 p-4 md:flex md:flex-col hidden min-h-screen transition-all duration-300 ease-in-out`}
+      className={`w-64 bg-gray-800 p-4 md:flex md:flex-col hidden min-h-screen transition-all duration-300 ease-in-out `}
     >
       {/* Header with toggle and edit icons */}
       <div className="flex w-full justify-between items-center py-3">
