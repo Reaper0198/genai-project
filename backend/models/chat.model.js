@@ -20,10 +20,6 @@ const chatSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
-    },
-    sessionId: {
-        type: String, // You can use a session ID if needed
         required: true,
     },
     messages: [messageSchema]
