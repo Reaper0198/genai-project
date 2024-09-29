@@ -5,8 +5,9 @@ import Navbar from './components/home/NAVBAR'
 import HomePage from './pages/HomePage'
 import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SignInPage';
-import 'react-toastify/dist/ReactToastify.css';
 import { Toaster } from 'react-hot-toast';
+import Footer from './components/footer/Footer'
+import ChatPage from './pages/ChatPage'
 
 function App() {
   axios.defaults.baseURL = 'http://localhost:3000/api/';
@@ -19,8 +20,8 @@ function App() {
     <Route path="/" element={<HomePage />} />
     <Route path="/sign-up" element={<SignUpPage />} />
     <Route path="/sign-in" element={<SignInPage />} />
-    </Routes>
-    </BrowserRouter>
+      </Routes>
+      </BrowserRouter>
   )
 }
 
