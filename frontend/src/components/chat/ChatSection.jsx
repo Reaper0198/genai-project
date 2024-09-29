@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ReactQuill from "react-quill"; // Import React Quill for displaying rich text
+import { motion } from "framer-motion"; // Import Framer Motion
 import "react-quill/dist/quill.snow.css"; // Import the Quill CSS for formatting
+import arrow from "../../assets/arrow.gif"
 
 const ChatSection = () => {
   const [story, setStory] = useState(""); // Holds the AI-generated response
@@ -11,10 +12,21 @@ const ChatSection = () => {
 
   // Custom prompt for the AI
   const customPrompt =
-    "Provide empathetic advice and use emojis to show encouragement. Say it in 100 words.";
+    "Provide empathetic advice and use emojis to show encouragement.";
+
+  const lastMessageRef = useRef(null); // Create a ref to reference the last message in chat history
+  const chatContainerRef = useRef(null); // Create a ref for the chat container
+
+  useEffect(() => {
+    if (lastMessageRef.current && chatContainerRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
+    }
+  }, [chatHistory]);
 
   const handleSendMessage = async () => {
-    if (!userInput.trim()) return; 
+    if (!userInput.trim()) return;
+    if(loading)
+      return;
 
     setChatHistory((prevChat) => [
       ...prevChat,
@@ -23,7 +35,6 @@ const ChatSection = () => {
     setLoading(true);
 
     try {
-      console.log(import.meta.env.GEMINI_API);
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
       const model = genAI.getGenerativeModel(
         { model: "tunedModels/mental-health-model-v343l4826azy" },
@@ -36,7 +47,9 @@ const ChatSection = () => {
       const combinedPrompt = `${userInput}. ${customPrompt}`;
 
       const result = await model.generateContent(combinedPrompt);
-      const responseText = await result.response.text();
+      const responseText = result.response
+        ? await result.response.text()
+        : "Sorry, I didn't understand that.";
 
       setChatHistory((prevChat) => [
         ...prevChat,
@@ -54,47 +67,76 @@ const ChatSection = () => {
       ]);
     } finally {
       setLoading(false);
-      setUserInput(""); 
+      setUserInput("");
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-gray-900 shadow-lg rounded-lg">
-      <h1 className="text-2xl font-semibold text-center mb-4 text-white">
-        Gemini AI Chat
-      </h1>
-
-      {/* Chat History Window */}
-      <div className="chat-window h-96 overflow-y-auto p-4 bg-gray-100 rounded-md border border-gray-300 mb-4">
+    <div
+      ref={chatContainerRef}
+      className=" lg:w-[50rem] md:w-[40rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f7f3ec]  flex flex-col justify-between h-full "
+    >
+      {chatHistory.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col justify-center items-center h-full"
+        >
+          <h1 className="md:text-3xl text-xl font-semibold text-gray-700">
+            Hello! How can I help you today? 😊
+          </h1>
+          <p className="mt-4 md:text-4xl text-xl font-semibold text-gray-300 text-center">
+            &quot;Mental health is not a destination, but a process. It&apos;about how you drive, not where you&apos;re going.&quot;
+          </p>
+          <div className="flex justify-between w-full mt-5">
+          <div>
+          <img src={arrow} alt="" style={{ transform: "scaleX(-1)" }} />
+          </div>
+          <div className="mt-5">
+          <img src={arrow} alt=""  />
+          </div>
+          </div>
+        </motion.div>
+        
+      )}
+      <div className="w-[50rem] ">
         {chatHistory.map((message, index) => (
           <div
             key={index}
-            className={`mb-3 p-3 ${
+            ref={index === chatHistory.length - 1 ? lastMessageRef : null}
+            className={`mb-5 p-5 ${
               message.sender === "user"
-                ? "bg-blue-500 text-white text-right rounded-tl-xl rounded-br-xl"
-                : "bg-gray-300 text-gray-800 text-left rounded-tr-xl rounded-bl-xl"
+                ? "bg-[#dff0e1] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
+                : "bg-[#ede6ed] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
             }`}
           >
-            <ReactQuill value={message.text} className="text-6xl font-semibold" readOnly={true} theme="bubble" />
+            <p className="text-lg">{message.text}</p>
           </div>
         ))}
         {loading && (
-          <div className="text-center text-gray-600">Gemini is typing...</div>
+          <div className="text-center text-gray-800">Gemini is typing...</div>
         )}
       </div>
 
       {/* Input Section */}
-      <div className="p-4 flex justify-center items-center bg-gray-900 space-x-4">
+      <div className=" p-4 flex justify-center items-center w-full">
         <input
           type="text"
-          className="bg-gray-800 p-3 rounded-xl w-full max-w-2xl flex-1 mr-4 outline-none focus:ring-2 focus:ring-blue-500 text-white"
+          className="bg-gray-300 p-3 rounded-xl flex-1 mr-2 outline-none focus:ring-2 focus:ring-gray-500 text-gray-800"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="Type your message..."
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
         />
         <button
           onClick={handleSendMessage}
-          className="bg-blue-600 px-3 py-2 rounded-md text-white hover:bg-blue-700 active:bg-blue-800 transition duration-150 ease-in-out"
+          className="bg-[#f2db90] px-3 py-2 rounded-md text-white hover:bg-[#f0ca4e] active:bg-[#ecbf2a] transition duration-150 ease-in-out"
         >
           Send
         </button>
