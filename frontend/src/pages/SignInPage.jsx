@@ -42,7 +42,7 @@ const SignInPage = () => {
   };
 
   return (
-    <div className='min-h-screen pt-32 bg-gradient-to-b from-[#fef4ee] to-[#f3e5e2] text-[#012f2c]'>
+    <div className='font-serif min-h-screen pt-32 bg-gradient-to-b from-[#fef4ee] to-[#f3e5e2] text-[#012f2c]'>
       <motion.div 
         initial={{ y: 500 }} 
         animate={{ y: 0 }}
@@ -51,7 +51,7 @@ const SignInPage = () => {
       >
         <div className='flex-1 gap-4'>
           <Link to={"/"}>
-            <h1 className='font-bold text-5xl flex flex-wrap text-[#f36400]'>Mindful</h1>
+            <h1 className='font-bold font-sans italic text-5xl flex flex-wrap text-[#f36400]'>Mindful</h1>
           </Link>
           <p className='text-md mt-5'>Sign in with your email and password to get started.</p>
           <div className='py-4'>
