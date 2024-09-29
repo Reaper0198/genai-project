@@ -9,11 +9,14 @@ import { Toaster } from "react-hot-toast";
 import Footer from "./components/footer/Footer";
 import ChatPage from "./pages/ChatPage";
 import ChatSection from "./components/chat/ChatSection";
+import ArticlePage from "./components/articles/ArticlePage";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 
 function App() {
   axios.defaults.baseURL = "http://localhost:3000/api/";
   return (
     <BrowserRouter>
+    <ScrollToTop/>
     <Toaster position="top-center"
   reverseOrder={false} />
     <Navbar/>
@@ -22,9 +25,9 @@ function App() {
     <Route path="/sign-up" element={<SignUpPage />} />
     <Route path="/sign-in" element={<SignInPage />} />
     <Route path="/chat" element={<ChatPage />} />
+    <Route path="/article/:id" element={<ArticlePage />} />
       </Routes>
     <Footer/>
-      <Footer/>
       </BrowserRouter>
   )
 }
