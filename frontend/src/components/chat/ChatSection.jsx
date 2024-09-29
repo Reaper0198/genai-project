@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { motion } from "framer-motion"; // Import Framer Motion
 import "react-quill/dist/quill.snow.css"; // Import the Quill CSS for formatting
+import arrow from "../../assets/arrow.gif"
 
 const ChatSection = () => {
   const [story, setStory] = useState(""); // Holds the AI-generated response
@@ -24,6 +25,8 @@ const ChatSection = () => {
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
+    if(loading)
+      return;
 
     setChatHistory((prevChat) => [
       ...prevChat,
@@ -71,7 +74,7 @@ const ChatSection = () => {
   return (
     <div
       ref={chatContainerRef}
-      className=" lg:w-[50rem] md:w-[40rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f7f3ec] my-auto"
+      className=" lg:w-[50rem] md:w-[40rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f7f3ec]  flex flex-col justify-between h-full "
     >
       {chatHistory.length === 0 && (
         <motion.div
@@ -83,13 +86,21 @@ const ChatSection = () => {
           <h1 className="md:text-3xl text-xl font-semibold text-gray-700">
             Hello! How can I help you today? 😊
           </h1>
-          <p className="md:text-3xl text-xl font-semibold text-gray-300">
-            &quot; Mental health is not a destination, but a process. It&apos;s
-            about how you drive, not where you&apos;re going.&quot;
+          <p className="mt-4 md:text-4xl text-xl font-semibold text-gray-300 text-center">
+            &quot;Mental health is not a destination, but a process. It&apos;about how you drive, not where you&apos;re going.&quot;
           </p>
+          <div className="flex justify-between w-full mt-5">
+          <div>
+          <img src={arrow} alt="" style={{ transform: "scaleX(-1)" }} />
+          </div>
+          <div className="mt-5">
+          <img src={arrow} alt=""  />
+          </div>
+          </div>
         </motion.div>
+        
       )}
-      <div className="w-[50rem]">
+      <div className="w-[50rem] ">
         {chatHistory.map((message, index) => (
           <div
             key={index}
