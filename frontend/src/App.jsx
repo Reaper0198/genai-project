@@ -14,17 +14,19 @@ function App() {
   axios.defaults.baseURL = "http://localhost:3000/api/";
   return (
     <BrowserRouter>
-      <Toaster position="top-center" reverseOrder={false} />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/chat" element={<ChatPage />} />
+    <Toaster position="top-center"
+  reverseOrder={false} />
+    <Navbar/>
+    <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/sign-up" element={<SignUpPage />} />
+    <Route path="/sign-in" element={<SignInPage />} />
+    <Route path="/chat" element={<ChatPage />} />
       </Routes>
-      <Footer />
-    </BrowserRouter>
-  );
+    <Footer/>
+      <Footer/>
+      </BrowserRouter>
+  )
 }
 
 export default App;

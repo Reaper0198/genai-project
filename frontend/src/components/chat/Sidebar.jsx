@@ -51,7 +51,7 @@ export default function Sidebar({ showSidebar, isOpen }) {
       }`}
     >
       {/* Header with toggle and edit icons */}
-      <div className="flex w-full justify-between items-center m py-3 md:mb-4">
+      <div className="flex w-full justify-between font-serif items-center m py-3 md:mb-4">
         <TbLayoutSidebarLeftCollapseFilled 
           className=" cursor-pointer ml-2"
           size={28}
@@ -61,7 +61,7 @@ export default function Sidebar({ showSidebar, isOpen }) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col items-start text-left">
+      <div className="flex flex-col items-start font-serif text-left">
         <p className="text-xl font-semibold">Today:</p>
         <ul className="py-2 w-60">
           <li className="hover:bg-[#efc44e]  border-2 border-[#012f2c] rounded-full p-2 cursor-pointer">{chatTitle}</li>
@@ -69,14 +69,14 @@ export default function Sidebar({ showSidebar, isOpen }) {
       </div>
 
       {/* Previous 7 Days Section */}
-      <div className="flex flex-col items-start text-left">
+      <div className="flex flex-col items-start font-serif text-left">
         <p className="text-xl my-2 font-semibold">Previous 7 Days:</p>
         <ul className="space-y-2">
         </ul>
       </div>
 
       {/* Log in button */}
-      <div className="my-4 absolute bottom-0  w-full">
+      <div className="my-4 absolute font-serif bottom-0  w-full">
         <button className="bg-[#cce270] w-56 py-2  rounded-md text-xl font-semibold active:bg-[#b1c94d] transition duration-300 ease-in-out hover:border-2 hover:border-[#85973f]">Log out</button>
       </div>
     </aside>
