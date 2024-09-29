@@ -1,8 +1,14 @@
 import React from "react";
 import { CiLocationOn } from "react-icons/ci";
+import { useLocation } from "react-router-dom";
 const Footer = () => {
+  const location = useLocation().pathname.split("/")[1];
+  console.log(location);
+  if (location === "chat") {
+    return null;
+  }
   return (
-    <footer className="fixed bottom-0 flex flex-col bg-[#012f2c] text-[#fbf7f0] w-full pb-10">
+    <footer className=" bottom-0 flex flex-col bg-[#012f2c] text-[#fbf7f0] w-full pb-10">
       <div className="flex flex-col items-center mt-10">
         <h1 className="italic text-[#e0bf40] font-sans text-7xl mb-8">
           Mindful

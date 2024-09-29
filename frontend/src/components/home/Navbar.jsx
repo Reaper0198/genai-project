@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../redux/user/userSlice';
 import { toast } from 'react-hot-toast';
@@ -11,6 +11,8 @@ const Navbar = () => {
   const controls = useAnimation();
   const navigate = useNavigate();
   const dispatch = useDispatch(); 
+  const location =useLocation().pathname.split('/')[1];
+  console.log(location)
   const { currentUser } = useSelector(state => state.user);
 
   const handleScroll = () => {
@@ -47,6 +49,9 @@ const Navbar = () => {
       });
     }
   }, [scrollY, controls]);
+  if(location === 'chat'){
+    return null;
+  }
 
   return (
     <motion.div
