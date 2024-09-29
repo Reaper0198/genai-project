@@ -67,7 +67,7 @@ const SignInPage = () => {
                   {field.charAt(0).toUpperCase() + field.slice(1)}
                 </label>
                 <input
-                  type={field === 'password' ? 'password' : 'text'}
+                  type={field === 'password' ? 'password' : 'email'}
                   placeholder={`${field}...`}
                   id={field}
                   value={formData[field]}
