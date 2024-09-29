@@ -2,6 +2,9 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import {Link} from "react-router-dom";
 const Footer = () => {
+  const handleNewsletterSubmit = () => {
+    
+  }
   return (
     <footer className="bottom-0 flex flex-col bg-[#012f2c] text-[#fbf7f0] w-full pb-10">
       <div className="flex flex-col items-center mt-10">
@@ -22,7 +25,9 @@ const Footer = () => {
             aria-label="Email address"
             className="rounded-full bg-[#3a4f4b] text-[#fbf7f0] px-4 focus:outline-none focus:ring-2 focus:ring-[#e0bf40] focus:ring-opacity-50"
           />
-          <button className="bg-[#1e675a] text-[#fbf7f0]  py-2 px-4 rounded hover:bg-[#1b5a4c] transition duration-200">
+          <button
+          onClick={handleNewsletterSubmit}
+          className="bg-[#1e675a] text-[#fbf7f0]  py-2 px-4 rounded hover:bg-[#1b5a4c] transition duration-200">
             Sign Up
           </button>
         </div>
