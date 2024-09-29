@@ -8,7 +8,7 @@ import SignInPage from "./pages/SignInPage";
 import { Toaster } from "react-hot-toast";
 import Footer from "./components/footer/Footer";
 import ChatPage from "./pages/ChatPage";
-// import ChatSection from "./components/chat/ChatSection";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   axios.defaults.baseURL = "http://localhost:3000/api/";
@@ -23,6 +23,7 @@ function App() {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
