@@ -12,7 +12,8 @@ const SignUpPage = () => {
     email: "",
     password: "",
     age: "",
-    gender: "Male",
+    gender: "",
+    isStudent: true,
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(formData.isStudent===false){
+      toast.error("Only students can sign up for this platform");
+      return;
+    }
     if (!validateForm()) return;
 
     try {
@@ -51,10 +56,13 @@ const SignUpPage = () => {
       setLoading(false);
     }
   };
+  const handleRadioChange = (e) => {
+    setFormData({ ...formData, isStudent: e.target.value==="true"?true:false });
+  };
   console.log(formData);
 
   return (
-    <div className="font-serif min-h-screen pt-32 bg-gradient-to-b from-[#fef4ee] to-[#f3e5e2] text-[#012f2c]">
+    <div className="font-serif min-h-screen  pt-32 p-6 bg-[#f4ded1] text-[#012f2c]">
       <motion.div
         initial={{ y: 500 }}
         animate={{ y: 0 }}
@@ -95,11 +103,13 @@ const SignUpPage = () => {
                       id="gender"
                       value={formData.gender}
                       onChange={handleChange}
+                      required
                       className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#f36400]"
                     >
+                      <option value="">Select</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Others">Others</option>
+                      <option value="PerferNotToSay">Perfer not to say</option>
                     </select>
                   ) : (
                     <input
@@ -114,23 +124,46 @@ const SignUpPage = () => {
                       id={field}
                       value={formData[field]}
                       onChange={handleChange}
+                      required
                       className="border rounded p-2 focus:outline-none focus:ring-2 focus:ring-[#f36400]"
                     />
                   )}
                 </div>
               )
             )}
-            {formData.gender === "Others" && (
-              <input
-                type="text"
-                id="gender"
-                value=""
-                onChange={handleChange}
-                placeholder="Gender"
-                className="border rounded mt-2 p-2 focus:outline-none focus:ring-2 focus:ring-[#f36400]"
-              />
-            )}
+            <div className='flex flex-col'>
+              <label className='text-sm font-semibold text-[#012f2c]'>
+                Are you a student?
+              </label>
+              <div className='flex items-center gap-5 mt-2'>
+                <div className='flex items-center'>
+                  <input
+                    type='radio'
+                    id='student'
+                    name='isStudent'
+                    value={true}
+                    checked={formData.isStudent === true}
+                    onChange={handleRadioChange}
+                    className='mr-2'
+                  />
+                  <label htmlFor='student'>Yes</label>
+                </div>
+                <div className='flex items-center'>
+                  <input
+                    type='radio'
+                    id='notStudent'
+                    name='isStudent'
+                    value={false}
+                    checked={formData.isStudent === false}
+                    onChange={handleRadioChange}
+                    className='mr-2'
+                  />
+                  <label htmlFor='notStudent'>No</label>
+                </div>
+              </div>
+            </div>
 
+            
             <button
               disabled={loading}
               className="bg-[#f36400] text-white font-semibold p-2 rounded-lg shadow-md transition duration-300 hover:bg-[#f3b000]"

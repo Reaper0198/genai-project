@@ -20,11 +20,11 @@ export default function OAuth() {
             name: resultsFromGoogle.user.displayName,
             email: resultsFromGoogle.user.email,
             gender: resultsFromGoogle.genders ? userInfo.genders[0].value : 'Not specified',
-            age: resultsFromGoogle.birthdays ? calculateAge(userInfo.birthdays[0].date) : 'Not specified',
-          });
+            age: resultsFromGoogle.birthdays ? calculateAge(userInfo.birthdays[0].date) : 0,
+          },{withCredentials:true});
           if (res.status === 200) {
             toast.success('Sign in successful!');
-            dispatch(signInSuccess(res.data));
+            dispatch(signInSuccess(res.data ));
             navigate('/');
           }
       } catch (error) {
