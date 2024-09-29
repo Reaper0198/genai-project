@@ -7,7 +7,7 @@ export default function ChatHeader({showSidebar, isOpen}) {
 
   return (
     <>
-    <header className="bg-[#f5ecb6] text-[#012f2c] p-4">
+    <header className="bg-[#f5ecb6] font-serif text-[#012f2c] p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Toggle and Edit icons */}
         <div className={`flex gap-4 items-center   `}>
@@ -21,7 +21,7 @@ export default function ChatHeader({showSidebar, isOpen}) {
         </div>
 
         {/* App Title */}
-        <h1 className="text-3xl font-bold font-sans">Mindfull</h1>
+        <h1 className="text-4xl font-bold italic font-sans">Mindful</h1>
 
         {/* Profile Icon */}
         <div className="flex items-center">
