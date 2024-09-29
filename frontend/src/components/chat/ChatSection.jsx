@@ -1,36 +1,59 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { motion } from "framer-motion"; // Import Framer Motion
-import "react-quill/dist/quill.snow.css"; // Import the Quill CSS for formatting
-import arrow from "../../assets/arrow.gif"
+import { motion } from "framer-motion";
+import "react-quill/dist/quill.snow.css";
+import arrow from "../../assets/arrow.gif";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ChatSection = () => {
-  const [story, setStory] = useState(""); // Holds the AI-generated response
-  const [loading, setLoading] = useState(false); // Loading state for fetching the AI response
-  const [userInput, setUserInput] = useState(""); // Holds the user's input
-  const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
+  const { currentUser } = useSelector((state) => state.user);
+  const [story, setStory] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [userInput, setUserInput] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
 
-  // Custom prompt for the AI
   const customPrompt =
     "Provide empathetic advice and use emojis to show encouragement.";
+  const lastMessageRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
-  const lastMessageRef = useRef(null); // Create a ref to reference the last message in chat history
-  const chatContainerRef = useRef(null); // Create a ref for the chat container
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(`/chat/${currentUser._id}`);
+        const chatData = response.data;
+        console.log("Chat History (Fetched):", chatData);
+
+        if (Array.isArray(chatData.messages)) {
+          setChatHistory(chatData.messages);
+        } else {
+          console.error("Messages is not an array:", chatData.messages);
+          setChatHistory([]);
+        }
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+    fetchChatHistory();
+  }, [currentUser._id]);
+
+  useEffect(() => {
+    console.log("Chat History (Updated):", chatHistory);
+  }, [chatHistory]);
 
   useEffect(() => {
     if (lastMessageRef.current && chatContainerRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatHistory]);
 
   const handleSendMessage = async () => {
-    if (!userInput.trim()) return;
-    if(loading)
-      return;
+    if (!userInput.trim() || loading) return;
 
     setChatHistory((prevChat) => [
       ...prevChat,
-      { sender: "user", text: userInput },
+      { sender: "user", message: userInput },
     ]);
     setLoading(true);
 
@@ -53,9 +76,18 @@ const ChatSection = () => {
 
       setChatHistory((prevChat) => [
         ...prevChat,
-        { sender: "bot", text: responseText },
+        { sender: "bot", message: responseText },
       ]);
-      setStory(responseText); // Set response as the story
+      setStory(responseText);
+
+      await axios.post("/chat/user-message", {
+        message: userInput,
+        userId: currentUser._id,
+      });
+      await axios.post("/chat/bot-message", {
+        message: responseText,
+        userId: currentUser._id,
+      });
     } catch (error) {
       console.error("Error fetching story:", error);
       setChatHistory((prevChat) => [
@@ -87,40 +119,44 @@ const ChatSection = () => {
             Hello! How can I help you today? 😊
           </h1>
           <p className="mt-4 md:text-4xl text-xl font-semibold text-gray-300 text-center">
-            &quot;Mental health is not a destination, but a process. It&apos;about how you drive, not where you&apos;re going.&quot;
+            &quot;Mental health is not a destination, but a process. It&apos;
+            about how you drive, not where you&apos;re going.&quot;
           </p>
           <div className="flex justify-between w-full mt-5">
-          <div>
-          <img src={arrow} alt="" style={{ transform: "scaleX(-1)" }} />
-          </div>
-          <div className="mt-5">
-          <img src={arrow} alt=""  />
-          </div>
+            <div>
+              <img src={arrow} alt="" style={{ transform: "scaleX(-1)" }} />
+            </div>
+            <div className="mt-5">
+              <img src={arrow} alt="" />
+            </div>
           </div>
         </motion.div>
-        
       )}
-      <div className="w-[50rem] ">
-        {chatHistory.map((message, index) => (
-          <div
-            key={index}
-            ref={index === chatHistory.length - 1 ? lastMessageRef : null}
-            className={`mb-5 p-5 ${
-              message.sender === "user"
-                ? "bg-[#dff0e1] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
-                : "bg-[#ede6ed] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
-            }`}
-          >
-            <p className="text-lg">{message.text}</p>
-          </div>
-        ))}
+      <div className="w-[50rem]">
+        {chatHistory.map((message, index) => {
+          console.log(message);
+          return (
+            <div
+              key={index}
+              ref={index === chatHistory.length - 1 ? lastMessageRef : null}
+              className={`mb-5 p-5 ${
+                message.sender === "user"
+                  ? "bg-[#dff0e1] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
+                  : "bg-[#ede6ed] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
+              }`}
+            >
+              <p className="text-lg">
+                {message.message || "No text available."}
+              </p>
+            </div>
+          );
+        })}
         {loading && (
           <div className="text-center text-gray-800">Gemini is typing...</div>
         )}
       </div>
 
-      {/* Input Section */}
-      <div className=" p-4 flex justify-center items-center w-full">
+      <div className="p-4 flex justify-center items-center w-full">
         <input
           type="text"
           className="bg-gray-300 p-3 rounded-xl flex-1 mr-2 outline-none focus:ring-2 focus:ring-gray-500 text-gray-800"
