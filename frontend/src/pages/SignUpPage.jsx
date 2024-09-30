@@ -20,6 +20,10 @@ const SignUpPage = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    if (id === 'age' && value < 0 || value >30) {
+      toast.error("Age cannot be negative and less than 30"  );
+      return;
+    }
     setFormData((prevData) => ({ ...prevData, [id]: value.trim() }));
   };
 
@@ -59,7 +63,6 @@ const SignUpPage = () => {
   const handleRadioChange = (e) => {
     setFormData({ ...formData, isStudent: e.target.value==="true"?true:false });
   };
-  console.log(formData);
 
   return (
     <div className="font-serif min-h-screen  pt-32 p-6 bg-[#f4ded1] text-[#012f2c]">

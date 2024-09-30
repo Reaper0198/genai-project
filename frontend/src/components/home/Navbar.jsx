@@ -29,7 +29,6 @@ const Navbar = () => {
     try {
       const res = await axios.post("/auth/sign-out");
       const data = await res.data;
-      console.log(data);
       if (res.status === 200) {
         toast.success("Sign out successful");
         dispatch(signOut());
