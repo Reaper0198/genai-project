@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbArrowRight } from "react-icons/tb";
 
+
 const HeroBanner = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const HeroBanner = () => {
         </div>
         {/* Text Section */}
         <div className="w-full">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h1 className="text-4xl md:text-5xl font-serif   font-bold leading-tight">
             Your{" "}
             <span className="italic font-sans font-medium">mental health</span>{" "}
             matters. <br />

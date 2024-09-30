@@ -19,6 +19,7 @@ export default function OAuth() {
           const res = await axios.post('/auth/google', {
             name: resultsFromGoogle.user.displayName,
             email: resultsFromGoogle.user.email,
+            profilePicture: resultsFromGoogle.user.photoURL,
             gender: resultsFromGoogle.genders ? userInfo.genders[0].value : 'Not specified',
             age: resultsFromGoogle.birthdays ? calculateAge(userInfo.birthdays[0].date) : 0,
           },{withCredentials:true});

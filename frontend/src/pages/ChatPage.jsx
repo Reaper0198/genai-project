@@ -3,6 +3,7 @@ import ChatHeader from "../components/chat/ChatHeader";
 import Sidebar from "../components/chat/Sidebar";
 import MainContent from "../components/chat/MainContent";
 import ChatSection from "../components/chat/ChatSection";
+import { useSelector } from "react-redux";
 
 const ChatPage = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -10,12 +11,13 @@ const ChatPage = () => {
   const showSidebar = () => {
     setIsOpen(!isOpen);
   };
-
   return (
-    <div className=" h-full min-h-screen  w-screen  bg-[#f7f3ec] text-gray-200 flex">
-     
-        <Sidebar showSidebar={showSidebar} isOpen={isOpen} setIsOpen={setIsOpen}/>
-
+    <div className="min-h-screen max-h-full  w-screen max-w-full  bg-[#f4ded1] text-gray-200 flex">
+      <Sidebar
+        showSidebar={showSidebar}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
 
       {/* Main Content */}
       <div
@@ -23,7 +25,13 @@ const ChatPage = () => {
       >
         <ChatHeader showSidebar={showSidebar} isOpen={isOpen} />
         {/* <MainContent /> */}
-        <ChatSection />
+        <div
+          className={`h-full ${
+            isOpen === true ? "sm:pl-[16rem]" : "pl-0"
+          }  w-full`}
+        >
+          <ChatSection />
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken"
 import { errorHandler } from "../utils/error.js";
 export const SignUp=async(req,res,next)=>{
-    const {username,email,password}=req.body;
+    const {username,name,email,password}=req.body;
     if(!username||!email||!password || username===""||email===""||password===""){
         next(errorHandler(400,"all feilds are requied"))
     }
@@ -14,10 +14,12 @@ export const SignUp=async(req,res,next)=>{
     const hashedPassword=brcyptjs.hashSync(password,10);
     const newUser=new User({
         username,
+        name,
         email,
         gender:req.body.gender || " ",
         age:req.body.age || 0,
         password:hashedPassword,
+        profilePic:"",  
         isStudent:req.body.isStudent || true
     })
 
@@ -29,7 +31,7 @@ export const SignUp=async(req,res,next)=>{
     next(error)
   }
 }
- // Adjust path if necessary
+// Adjust path if necessary
 
 export const SignIn = async (req, res, next) => {
   const { email, password } = req.body;
@@ -60,8 +62,8 @@ export const SignIn = async (req, res, next) => {
     });
 
     // Send response with the user data (excluding password)
-     res.status(200).json(
-       rest,
+    res.status(200).json(
+      rest,
     );
 
   } catch (error) {
@@ -72,8 +74,7 @@ export const SignIn = async (req, res, next) => {
 
 
 export const google = async (req, res, next) => {
-    const { email, name,gender,age } = req.body;
-    console.log(req.body.gender)
+    const { email, name,gender,age,profilePicture } = req.body;
     try {
       const user = await User.findOne({ email });
       if (user) {
@@ -92,71 +93,73 @@ export const google = async (req, res, next) => {
           Math.random().toString(36).slice(-8);
         const hashedPassword = brcyptjs.hashSync(generatedPassword, 10);
         const newUser = new User({
-          username:
-            name.split(' ').join('') +
-            Math.random().toString(9).slice(-4),
+        username:
+          name.toLowerCase().split(' ').join('') +Math.random().toString(9).slice(-4),
+          name: name,
           email,
-          password: hashedPassword,
-          gender:gender,
-          age:age,
-          isStudent:true
-        });
-        await newUser.save();
-        const token = jwt.sign(
-          { id: newUser._id },
-          process.env.JWT_SECRET
-        );
-        const { password, ...rest } = newUser._doc;
-        res.cookie('access_token', token, {
-          httpOnly: true,
-        })
-        res
-          .status(200)
-          
-          .json(rest);
-      }
-    } catch (error) {
-      next(error);
+        email,
+        profilePicture: profilePicture,
+        password: hashedPassword,
+        gender: gender,
+        age: age,
+        isStudent: true
+      });
+      await newUser.save();
+      const token = jwt.sign(
+        { id: newUser._id },
+        process.env.JWT_SECRET
+      );
+      const { password, ...rest } = newUser._doc;
+      res.cookie('access_token', token, {
+        httpOnly: true,
+      })
+      res
+        .status(200)
+
+        .json(rest);
     }
-  };
-  export const signOut=(req,res,next)=>{
-    try{
-       console.log(req.cookies)
-        res.clearCookie("access_token");
-        res.status(200).json({message: "User has Been sign out"})
-    }
-    catch(error){
-        next(error)
-    }
+  } catch (error) {
+    next(error);
+  }
+};
+export const signOut = (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({ message: "User has Been sign out" })
+  }
+  catch (error) {
+    next(error)
+  }
 }
 
-export const updateUser=async(req,res,next)=>{
-  if(req.user.id!==req.params.userId){
-      return next(errorHandler(401,"you can't update other user's data"));
+export const updateUser = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "you can't update other user's data"));
 
   }
-  if(req.body.username){
-      if(req.body.username.length>30){
-          return next(errorHandler(500,"username must be less than 20 characters"));
-      }
-      if(req.body.username.includes(" ")){
-          return next(errorHandler(400,"username can't contain space"));
-      }
+  if (req.body.username) {
+    if (req.body.username.length > 30) {
+      return next(errorHandler(500, "username must be less than 20 characters"));
+    }
+    if (req.body.username.includes(" ")) {
+      return next(errorHandler(400, "username can't contain space"));
+    }
   }
-  try{
-      console.log(req.body.profilePic)
-      console.log(req.body)
-      const updatedUser=await User.findByIdAndUpdate(req.params.userId,{$set:{
-          username:req.body.username,
-          email:req.body.email,
-          age:req.body.age,
-          gender:req.body.gender,
-      }},{new:true});
-      const {password,...rest}=updatedUser._doc;
-      res.status(200).json(rest); 
+  try {
+    const updatedUser = await User.findByIdAndUpdate(req.params.userId, {
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        profilePic: req.body.profilePic,
+        age: req.body.age,
+        gender: req.body.gender,
+      }
+    }, { new: true });
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json(rest);
   }
-  catch(error){
-      next(error);
+  catch (error) {
+    next(error);
   }
 
 }

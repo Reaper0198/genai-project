@@ -39,7 +39,7 @@ const ProfilePage = () => {
     const { id, value } = e.target;
     
     // Prevent age from being negative
-    if (id === 'age' && value < 0) {
+    if (id === 'age' && (value < 0 || value >30)) {
       toast.error("Age cannot be negative");
       return;
     }
@@ -71,11 +71,10 @@ const ProfilePage = () => {
     return <div className="spinner">Loading...</div>; // Add a loading spinner if necessary
   }
   
-  console.log(formData);  
 
   return (
     
-    <div className="min-h-screen pt-32 bg-[#f4ded1] text-[#012f2c]">
+    <div className="font-serif min-h-screen pt-32 bg-[#f4ded1] text-[#012f2c]">
       <motion.div 
         initial={{ y: 500 }} 
         animate={{ y: 0 }}
