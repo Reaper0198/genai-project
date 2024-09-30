@@ -22,13 +22,13 @@ export const SignUp=async(req,res,next)=>{
         isStudent:req.body.isStudent || true
     })
 
-    try {
-        await newUser.save();  
-        res.json("sign up successfull") 
-        
-    } catch (error) {
-        next(error)
-    }
+  try {
+    await newUser.save();
+    res.json("sign up successfull")
+
+  } catch (error) {
+    next(error)
+  }
 }
  // Adjust path if necessary
 

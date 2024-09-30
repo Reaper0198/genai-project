@@ -123,7 +123,7 @@ const SignUpPage = () => {
                           ? "number"
                           : "text"
                       }
-                      placeholder={`${field}...`}
+                      placeholder={`Enter your ${field}`}
                       id={field}
                       value={formData[field]}
                       onChange={handleChange}

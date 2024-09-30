@@ -74,7 +74,7 @@ const ProfilePage = () => {
 
   return (
     
-    <div className="min-h-screen pt-32 bg-[#f4ded1] text-[#012f2c]">
+    <div className="font-serif min-h-screen pt-32 bg-[#f4ded1] text-[#012f2c]">
       <motion.div 
         initial={{ y: 500 }} 
         animate={{ y: 0 }}
