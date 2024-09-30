@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbArrowRight } from "react-icons/tb";
 
+
 const HeroBanner = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();

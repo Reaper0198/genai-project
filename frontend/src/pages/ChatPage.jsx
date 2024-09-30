@@ -12,10 +12,9 @@ const ChatPage = () => {
   };
 
   return (
-    <div className=" h-full min-h-screen  w-screen  bg-[#f7f3ec] text-gray-200 flex">
+    <div className="min-h-screen max-h-full  w-screen max-w-full  bg-[#f4ded1] text-gray-200 flex">
      
-        <Sidebar showSidebar={showSidebar} isOpen={isOpen} setIsOpen={setIsOpen}/>
-
+        <Sidebar showSidebar={showSidebar} isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* Main Content */}
       <div
@@ -23,7 +22,10 @@ const ChatPage = () => {
       >
         <ChatHeader showSidebar={showSidebar} isOpen={isOpen} />
         {/* <MainContent /> */}
+        <div className={`h-full ${isOpen===true?"sm:pl-[16rem] transform transition-transform duration-700 ease-in-out":"pl-0"} w-screen max-w-full bg-[#f4ded1] text-gray-200 flex`}>
         <ChatSection />
+        </div>
+        
       </div>
     </div>
   );
