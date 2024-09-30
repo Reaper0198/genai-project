@@ -3,12 +3,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { motion } from "framer-motion";
 import "react-quill/dist/quill.snow.css";
 import arrow from "../../assets/arrow.gif";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
-import doodle from "../../assets/doodle.png";
-import flower from "../../assets/flower.png";
-import cup1 from "../../assets/cup1.png";
-import solar from "../../assets/solar.png";
 
 const ChatSection = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,36 +17,59 @@ const ChatSection = () => {
 
   const customPrompt =
     "Provide empathetic advice and use emojis to show encouragement.";
+  const lastMessageRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
-  const lastMessageRef = useRef(null); // Ref to the last message in chat history
-  const chatContainerRef = useRef(null); // Ref for the chat container
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(`/chat/${currentUser._id}`);
+        const chatData = response.data;
+        console.log("Chat History (Fetched):", chatData);
+
+        if (Array.isArray(chatData.messages)) {
+          setChatHistory(chatData.messages);
+        } else {
+          console.error("Messages is not an array:", chatData.messages);
+          setChatHistory([]);
+        }
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+    fetchChatHistory();
+  }, [currentUser._id]);
+
+  useEffect(() => {
+    console.log("Chat History (Updated):", chatHistory);
+  }, [chatHistory]);
 
   useEffect(() => {
     if (lastMessageRef.current && chatContainerRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to the last message
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatHistory]);
 
-  // Typing animation function using setTimeout
-  const typeResponse = (text) => {
-    let index = -1;
-    setTypedResponse(""); // Clear any previous typed text
+  // // Typing animation function using setTimeout
+  // const typeResponse = (text) => {
+  //   let index = -1;
+  //   setTypedResponse(""); // Clear any previous typed text
 
-    // Ensure that text is not null, undefined, or empty
-    if (!text) return;
+  //   // Ensure that text is not null, undefined, or empty
+  //   if (!text) return;
 
-    const typeCharacter = () => {
-      if (index < text.length - 1) {
-        setTypedResponse((prev) => prev + text[index]);
-        index++;
+  //   const typeCharacter = () => {
+  //     if (index < text.length - 1) {
+  //       setTypedResponse((prev) => prev + text[index]);
+  //       index++;
 
-        // Use setTimeout to control typing speed
-        setTimeout(typeCharacter, 10); // Adjust speed here (50ms per character)
-      }
-    };
+  //       // Use setTimeout to control typing speed
+  //       setTimeout(typeCharacter, 10); // Adjust speed here (50ms per character)
+  //     }
+  //   };
 
-    typeCharacter(); // Start typing
-  };
+  //   typeCharacter(); // Start typing
+  // };
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
@@ -57,7 +77,7 @@ const ChatSection = () => {
 
     setChatHistory((prevChat) => [
       ...prevChat,
-      { sender: "user", text: userInput },
+      { sender: "user", message: userInput },
     ]);
     setLoading(true);
 
@@ -80,10 +100,18 @@ const ChatSection = () => {
 
       setChatHistory((prevChat) => [
         ...prevChat,
-        { sender: "bot", text: responseText },
+        { sender: "bot", message: responseText },
       ]);
-      setStory(responseText); // Set response as the story
-      typeResponse(responseText); // Trigger the typing effect
+      setStory(responseText);
+
+      await axios.post("/chat/user-message", {
+        message: userInput,
+        userId: currentUser._id,
+      });
+      await axios.post("/chat/bot-message", {
+        message: responseText,
+        userId: currentUser._id,
+      });
     } catch (error) {
       console.error("Error fetching story:", error);
       setChatHistory((prevChat) => [
@@ -158,9 +186,7 @@ const ChatSection = () => {
           >
             {/* Show the typing animation for the bot message */}
             <p className="sm:text-lg ">
-              {message.sender === "bot" && index === chatHistory.length - 1
-                ? typedResponse
-                : message.text}
+              {message.message || "no text available"}
             </p>
           </div>
         ))}
