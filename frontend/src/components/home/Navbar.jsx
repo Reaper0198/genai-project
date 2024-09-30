@@ -89,6 +89,7 @@ const Navbar = () => {
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
         }}
+        className=""
       >
         <div className="w-full p-4 flex hover:cursor-pointer text-[#012f2c] items-center md:justify-evenly justify-between px-10">
           <div onClick={() => navigate("/")}>
@@ -166,70 +167,79 @@ const Navbar = () => {
 
           <div className="md:hidden">
             {showMenu ? (
-              <IoClose className="text-2xl" onClick={() => setShowMenu(!showMenu)} />):(
-              <BsList className="text-2xl" onClick={() => setShowMenu(!showMenu)} />
-            )
-              }
+              <IoClose
+                className="text-2xl"
+                onClick={() => setShowMenu(!showMenu)}
+              />
+            ) : (
+              <BsList
+                className="text-2xl"
+                onClick={() => setShowMenu(!showMenu)}
+              />
+            )}
           </div>
         </div>
       </motion.div>
 
       {/* Mobile Menu */}
       {showMenu && (
-        <div
-          className="block shadow-2xl pt-24 p-4  bg-[#ffffff] text-[#012f2c] text-xl fixed top-0 left-0 w-full z-1000"
-        >
+        <div className="font-serif z-[99999] block shadow-2xl pt-24 p-4  bg-[#ffffff] text-[#012f2c] text-xl fixed top-0 left-0 w-full z-1000">
           <div className="flex flex-col">
-
-          <Link to={"/"}
-            className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            Home
-          </Link>
-          <Link to={"/about"}
-            className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            About
-          </Link>
-          <Link to={"/contact"}
-            className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            Contact
-          </Link>
-          {currentUser ? (
-            <>
-              <Link to={"/profile"}
-                className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-                onClick={() => setShowMenu(!showMenu)}
-              >
-                Profile
-              </Link>
-              <div
-                className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </div>
-            </>
-          ) : (
-            <>
-              <Link to={"/sign-in"}
-                className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-                onClick={() => setShowMenu(!showMenu)}
-              >
-                Log In
-              </Link>
-              <Link to={"/sign-up"}
-                className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
-                onClick={() => setShowMenu(!showMenu)}
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
+            <Link
+              to={"/"}
+              className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Home
+            </Link>
+            <Link
+              to={"/about"}
+              className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              About
+            </Link>
+            <Link
+              to={"/contact"}
+              className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              Contact
+            </Link>
+            {currentUser ? (
+              <>
+                <Link
+                  to={"/profile"}
+                  className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+                  onClick={() => setShowMenu(!showMenu)}
+                >
+                  Profile
+                </Link>
+                <div
+                  className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={"/sign-in"}
+                  className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+                  onClick={() => setShowMenu(!showMenu)}
+                >
+                  Log In
+                </Link>
+                <Link
+                  to={"/sign-up"}
+                  className="cursor-pointer hover:underline hover:text-[#00a884] transition-colors"
+                  onClick={() => setShowMenu(!showMenu)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

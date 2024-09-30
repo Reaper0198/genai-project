@@ -90,7 +90,7 @@ const SignInPage = () => {
                 </label>
                 <input
                   type={field === "password" ? "password" : "email"}
-                  placeholder={`${field}...`}
+                  placeholder={`Enter you ${field}`}
                   id={field}
                   value={formData[field]}
                   onChange={handleChange}
