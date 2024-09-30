@@ -37,6 +37,7 @@ const MentalHealthIssues = () => {
     }, [controls, inView]);
 
 
+
     const [slidePercentage, setSlidePercentage] = useState(100);
 
     useEffect(() => {
@@ -149,6 +150,7 @@ const MentalHealthIssues = () => {
                             img={anxiety}
                             quote={'Anxiety is just a story you tell yourself; rewrite it.'} />
                     </Link>
+
                 </motion.div>
                 <motion.div
                     ref={ref}
