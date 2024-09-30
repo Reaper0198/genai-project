@@ -14,7 +14,7 @@ const ChatPage = () => {
   return (
     <div className="min-h-screen max-h-full  w-screen max-w-full  bg-[#f4ded1] text-gray-200 flex">
      
-        <Sidebar showSidebar={showSidebar} isOpen={isOpen} />
+        <Sidebar showSidebar={showSidebar} isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* Main Content */}
       <div
