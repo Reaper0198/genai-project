@@ -18,6 +18,7 @@ export const SignUp=async(req,res,next)=>{
         gender:req.body.gender || " ",
         age:req.body.age || 0,
         password:hashedPassword,
+        profilePic:"",  
         isStudent:req.body.isStudent || true
     })
 
@@ -72,8 +73,7 @@ export const SignIn = async (req, res, next) => {
 
 
 export const google = async (req, res, next) => {
-    const { email, name,gender,age } = req.body;
-    console.log(req.body.gender)
+    const { email, name,gender,age,profilePicture } = req.body;
     try {
       const user = await User.findOne({ email });
       if (user) {
@@ -96,6 +96,7 @@ export const google = async (req, res, next) => {
             name.split(' ').join('') +
             Math.random().toString(9).slice(-4),
           email,
+          profilePicture: profilePicture,
           password: hashedPassword,
           gender:gender,
           age:age,
@@ -121,7 +122,6 @@ export const google = async (req, res, next) => {
   };
   export const signOut=(req,res,next)=>{
     try{
-       console.log(req.cookies)
         res.clearCookie("access_token");
         res.status(200).json({message: "User has Been sign out"})
     }
@@ -144,11 +144,10 @@ export const updateUser=async(req,res,next)=>{
       }
   }
   try{
-      console.log(req.body.profilePic)
-      console.log(req.body)
       const updatedUser=await User.findByIdAndUpdate(req.params.userId,{$set:{
           username:req.body.username,
           email:req.body.email,
+          profilePic:req.body.profilePic,
           age:req.body.age,
           gender:req.body.gender,
       }},{new:true});
