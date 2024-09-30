@@ -8,7 +8,7 @@ export default function ChatHeader({showSidebar, isOpen}) {
 
   return (
     <>
-    <header className="fixed top-0 left-0 w-full bg-[#f5edc3] font-serif text-[#012f2c] p-4">
+    <header className="fixed top-0 left-0 w-full bg-[#f5edc3] font-serif text-[#012f2c] p-4 z-5">
       <div className="container mx-2 flex justify-between items-center">
         {/* Toggle and Edit icons */}
         <div className={`flex gap-4 items-center   `}>

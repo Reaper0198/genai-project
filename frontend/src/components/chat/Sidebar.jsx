@@ -4,53 +4,56 @@ import { PiList } from "react-icons/pi";
 import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { signOut } from "../../redux/user/userSlice";
-const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
-const { currentUser } = useSelector((state) => state.user);
+import axios from "axios";
 
-useEffect(() => {
-  const fetchChatHistory = async () => {
-    try {
-      const response = await axios.get(`/chat/${currentUser._id}`);
-      const chatData = response.data;
-      console.log("Chat History (Fetched):", chatData);
-
-      if (Array.isArray(chatData.messages)) {
-        setChatHistory(chatData.messages);
-      } else {
-        console.error("Messages is not an array:", chatData.messages);
-        setChatHistory([]);
-      }
-    } catch (error) {
-      console.error("Error fetching chat history:", error);
-    }
-  };
-  fetchChatHistory();
-}, [currentUser._id]);
-
-if (chatHistory.length > 0) {
-  console.log("Chat History (Updated):", chatHistory);
-}
-const useMediaQuery = (query) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
-
-  return matches;
-};
 
 export default function Sidebar({ showSidebar, isOpen, setIsOpen }) {
+    
+    const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
+    const { currentUser } = useSelector((state) => state.user);
+    
+    useEffect(() => {
+      const fetchChatHistory = async () => {
+        try {
+          const response = await axios.get(`/chat/${currentUser._id}`);
+          const chatData = response.data;
+          console.log("Chat History (Fetched):", chatData);
+    
+          if (Array.isArray(chatData.messages)) {
+            setChatHistory(chatData.messages);
+          } else {
+            console.error("Messages is not an array:", chatData.messages);
+            setChatHistory([]);
+          }
+        } catch (error) {
+          console.error("Error fetching chat history:", error);
+        }
+      };
+      fetchChatHistory();
+    }, [currentUser._id]);
+    
+    if (chatHistory.length > 0) {
+      console.log("Chat History (Updated):", chatHistory);
+    }
+    const useMediaQuery = (query) => {
+      const [matches, setMatches] = useState(false);
+    
+      useEffect(() => {
+        const media = window.matchMedia(query);
+        if (media.matches !== matches) {
+          setMatches(media.matches);
+        }
+        const listener = () => setMatches(media.matches);
+        media.addEventListener("change", listener);
+    
+        return () => media.removeEventListener("change", listener);
+      }, [matches, query]);
+    
+      return matches;
+    };
   // Custom prompt for the AI
   const userInput = chatHistory[0]?.message || "Welcome";
 
