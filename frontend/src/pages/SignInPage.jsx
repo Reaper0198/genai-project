@@ -33,13 +33,11 @@ const SignInPage = () => {
       dispatch(signInStart());
       const res = await axios.post("/auth/sign-in", formData,{withCredentials:true});
       const data = res.data;
-      console.log(data);
         if (res.status === 200) {
             toast.success("Sign in successful!");
             dispatch(signInSuccess(data));
             navigate('/');
         } else {
-          console.log(data);
           toast.error(data.message);
             dispatch(signInFailure(data.message));
         }

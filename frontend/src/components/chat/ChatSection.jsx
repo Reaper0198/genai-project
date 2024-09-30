@@ -82,19 +82,40 @@ const ChatSection = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
-      const model = genAI.getGenerativeModel(
-        { model: "tunedModels/mental-health-model-v343l4826azy" },
-        {
-          temperature: 0.5,
-          maxTokens: 100,
-          responseLength: 1000,
-        }
-      );
-      const combinedPrompt = `${userInput}. ${customPrompt}`;
+      const model = genAI.getGenerativeModel({
+        model: "tunedModels/mental-health-model-v343l4826azy",
+      });
 
-      const result = await model.generateContent(combinedPrompt);
+      const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType: "text/plain",
+      };
+
+      // Prepare history in the format expected by GoogleGenerativeAI
+      const history = chatHistory.map((message) => ({
+        role: message.sender === "user" ? "user" : "model",
+        parts: [{ text: message.message }],
+      }));
+
+      const chatSession = model.startChat({
+        generationConfig,
+        history: [
+          ...history, // Include the entire chat history
+          {
+            role: "user",
+            parts: [{ text: userInput }],
+          },
+        ],
+      });
+
+      const result = await chatSession.sendMessage(
+        userInput + "," + customPrompt
+      );
       const responseText = result.response
-        ? await result.response.text()
+        ? result.response.text()
         : "Sorry, I didn't understand that.";
 
       setChatHistory((prevChat) => [
@@ -103,6 +124,7 @@ const ChatSection = () => {
       ]);
       setStory(responseText);
 
+      // Save both user input and bot response in the database
       await axios.post("/chat/user-message", {
         message: userInput,
         userId: currentUser._id,
@@ -147,10 +169,7 @@ const ChatSection = () => {
               transition={{ duration: 0.9 }}
               className="ml-2 bg-gradient-to-r from-orange-400 to-orange-700 bg-clip-text text-transparent mr-1 "
             >
-              {currentUser.username.substring(
-                0,
-                currentUser.username.length - 4
-              )}
+              {currentUser.username}
             </motion.span>
           </h1>
           <h1 className="md:text-4xl sm:text-3xl text-2xl font-semibold text-gray-600 flex mt-3 ml-8 text-nowrap">

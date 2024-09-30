@@ -20,6 +20,10 @@ const SignUpPage = () => {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    if (id === "age" && (value < 0 || value > 30)) {
+      toast.error("Age cannot be negative and less than 30");
+      return;
+    }
     setFormData((prevData) => ({ ...prevData, [id]: value.trim() }));
   };
 
@@ -34,7 +38,7 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(formData.isStudent===false){
+    if (formData.isStudent === false) {
       toast.error("Only students can sign up for this platform");
       return;
     }
@@ -57,9 +61,11 @@ const SignUpPage = () => {
     }
   };
   const handleRadioChange = (e) => {
-    setFormData({ ...formData, isStudent: e.target.value==="true"?true:false });
+    setFormData({
+      ...formData,
+      isStudent: e.target.value === "true" ? true : false,
+    });
   };
-  console.log(formData);
 
   return (
     <div className="font-serif min-h-screen  pt-32 p-6 bg-[#f4ded1] text-[#012f2c]">
@@ -131,39 +137,38 @@ const SignUpPage = () => {
                 </div>
               )
             )}
-            <div className='flex flex-col'>
-              <label className='text-sm font-semibold text-[#012f2c]'>
+            <div className="flex flex-col">
+              <label className="text-sm font-semibold text-[#012f2c]">
                 Are you a student?
               </label>
-              <div className='flex items-center gap-5 mt-2'>
-                <div className='flex items-center'>
+              <div className="flex items-center gap-5 mt-2">
+                <div className="flex items-center">
                   <input
-                    type='radio'
-                    id='student'
-                    name='isStudent'
+                    type="radio"
+                    id="student"
+                    name="isStudent"
                     value={true}
                     checked={formData.isStudent === true}
                     onChange={handleRadioChange}
-                    className='mr-2'
+                    className="mr-2"
                   />
-                  <label htmlFor='student'>Yes</label>
+                  <label htmlFor="student">Yes</label>
                 </div>
-                <div className='flex items-center'>
+                <div className="flex items-center">
                   <input
-                    type='radio'
-                    id='notStudent'
-                    name='isStudent'
+                    type="radio"
+                    id="notStudent"
+                    name="isStudent"
                     value={false}
                     checked={formData.isStudent === false}
                     onChange={handleRadioChange}
-                    className='mr-2'
+                    className="mr-2"
                   />
-                  <label htmlFor='notStudent'>No</label>
+                  <label htmlFor="notStudent">No</label>
                 </div>
               </div>
             </div>
 
-            
             <button
               disabled={loading}
               className="bg-[#f36400] text-white font-semibold p-2 rounded-lg shadow-md transition duration-300 hover:bg-[#f3b000]"
