@@ -31,7 +31,7 @@ export const SignUp=async(req,res,next)=>{
     next(error)
   }
 }
- // Adjust path if necessary
+// Adjust path if necessary
 
 export const SignIn = async (req, res, next) => {
   const { email, password } = req.body;
@@ -62,8 +62,8 @@ export const SignIn = async (req, res, next) => {
     });
 
     // Send response with the user data (excluding password)
-     res.status(200).json(
-       rest,
+    res.status(200).json(
+      rest,
     );
 
   } catch (error) {
@@ -95,68 +95,71 @@ export const google = async (req, res, next) => {
         const newUser = new User({
         username:
           name.toLowerCase().split(' ').join('') +Math.random().toString(9).slice(-4),
-          name: name, 
+          name: name,
           email,
-          profilePicture: profilePicture,
-          password: hashedPassword,
-          gender:gender,
-          age:age,
-          isStudent:true
-        });
-        await newUser.save();
-        const token = jwt.sign(
-          { id: newUser._id },
-          process.env.JWT_SECRET
-        );
-        const { password, ...rest } = newUser._doc;
-        res.cookie('access_token', token, {
-          httpOnly: true,
-        })
-        res
-          .status(200)
-          
-          .json(rest);
-      }
-    } catch (error) {
-      next(error);
+        email,
+        profilePicture: profilePicture,
+        password: hashedPassword,
+        gender: gender,
+        age: age,
+        isStudent: true
+      });
+      await newUser.save();
+      const token = jwt.sign(
+        { id: newUser._id },
+        process.env.JWT_SECRET
+      );
+      const { password, ...rest } = newUser._doc;
+      res.cookie('access_token', token, {
+        httpOnly: true,
+      })
+      res
+        .status(200)
+
+        .json(rest);
     }
-  };
-  export const signOut=(req,res,next)=>{
-    try{
-        res.clearCookie("access_token");
-        res.status(200).json({message: "User has Been sign out"})
-    }
-    catch(error){
-        next(error)
-    }
+  } catch (error) {
+    next(error);
+  }
+};
+export const signOut = (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({ message: "User has Been sign out" })
+  }
+  catch (error) {
+    next(error)
+  }
 }
 
-export const updateUser=async(req,res,next)=>{
-  if(req.user.id!==req.params.userId){
-      return next(errorHandler(401,"you can't update other user's data"));
+export const updateUser = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "you can't update other user's data"));
 
   }
-  if(req.body.username){
-      if(req.body.username.length>30){
-          return next(errorHandler(500,"username must be less than 20 characters"));
-      }
-      if(req.body.username.includes(" ")){
-          return next(errorHandler(400,"username can't contain space"));
-      }
+  if (req.body.username) {
+    if (req.body.username.length > 30) {
+      return next(errorHandler(500, "username must be less than 20 characters"));
+    }
+    if (req.body.username.includes(" ")) {
+      return next(errorHandler(400, "username can't contain space"));
+    }
   }
-  try{
-      const updatedUser=await User.findByIdAndUpdate(req.params.userId,{$set:{
-          username:req.body.username,
-          email:req.body.email,
-          profilePic:req.body.profilePic,
-          age:req.body.age,
-          gender:req.body.gender,
-      }},{new:true});
-      const {password,...rest}=updatedUser._doc;
-      res.status(200).json(rest); 
+  try {
+    const updatedUser = await User.findByIdAndUpdate(req.params.userId, {
+      $set: {
+        username: req.body.username,
+        email: req.body.email,
+        profilePic: req.body.profilePic,
+        age: req.body.age,
+        gender: req.body.gender,
+      }
+    }, { new: true });
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json(rest);
   }
-  catch(error){
-      next(error);
+  catch (error) {
+    next(error);
   }
 
 }
