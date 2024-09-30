@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken"
 import { errorHandler } from "../utils/error.js";
 export const SignUp=async(req,res,next)=>{
-    const {username,email,password}=req.body;
+    const {username,name,email,password}=req.body;
     if(!username||!email||!password || username===""||email===""||password===""){
         next(errorHandler(400,"all feilds are requied"))
     }
@@ -14,6 +14,7 @@ export const SignUp=async(req,res,next)=>{
     const hashedPassword=brcyptjs.hashSync(password,10);
     const newUser=new User({
         username,
+        name,
         email,
         gender:req.body.gender || " ",
         age:req.body.age || 0,
@@ -92,9 +93,9 @@ export const google = async (req, res, next) => {
           Math.random().toString(36).slice(-8);
         const hashedPassword = brcyptjs.hashSync(generatedPassword, 10);
         const newUser = new User({
-          username:
-            name.split(' ').join('') +
-            Math.random().toString(9).slice(-4),
+        username:
+          name.toLowerCase().split(' ').join('') +Math.random().toString(9).slice(-4),
+          name: name, 
           email,
           profilePicture: profilePicture,
           password: hashedPassword,
