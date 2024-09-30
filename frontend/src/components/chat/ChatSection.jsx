@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { motion } from "framer-motion";
 import "react-quill/dist/quill.snow.css";
@@ -49,38 +49,27 @@ const ChatSection = () => {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatHistory]);
-  // // Typing animation function using setTimeout
-  // const typeResponse = (text) => {
-  //   let index = -1;
-  //   setTypedResponse(""); // Clear any previous typed text
 
-  //   // Ensure that text is not null, undefined, or empty
-  //   if (!text) return;
-
-  //   const typeCharacter = () => {
-  //     if (index < text.length - 1) {
-  //       setTypedResponse((prev) => prev + text[index]);
-  //       index++;
-
-  //       // Use setTimeout to control typing speed
-  //       setTimeout(typeCharacter, 10); // Adjust speed here (50ms per character)
-  //     }
-  //   };
-
-  //   typeCharacter(); // Start typing
-  // };
-
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (!userInput.trim()) return;
     if (loading) return;
 
-    setChatHistory((prevChat) => [
-      ...prevChat,
+    // Adding user message to chat history
+    const newChatHistory = [
+      ...chatHistory,
       { sender: "user", message: userInput },
-    ]);
+    ];
+    setChatHistory(newChatHistory);
     setLoading(true);
 
     try {
+      // Build the conversation context for the AI model
+      const previousMessages = newChatHistory
+        .map((message) => `${message.sender === 'user' ? 'User' : 'Bot'}: ${message.message}`)
+        .join("\n");
+      
+      const combinedPrompt = `${previousMessages}\n${customPrompt}`;
+
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
       const model = genAI.getGenerativeModel(
         { model: "tunedModels/mental-health-model-v343l4826azy" },
@@ -90,19 +79,20 @@ const ChatSection = () => {
           responseLength: 1000,
         }
       );
-      const combinedPrompt = `${userInput}. ${customPrompt}`;
 
       const result = await model.generateContent(combinedPrompt);
       const responseText = result.response
         ? await result.response.text()
         : "Sorry, I didn't understand that.";
 
+      // Adding AI-generated message to chat history
       setChatHistory((prevChat) => [
         ...prevChat,
         { sender: "bot", message: responseText },
       ]);
       setStory(responseText);
 
+      // Save messages to database
       await axios.post("/chat/user-message", {
         message: userInput,
         userId: currentUser._id,
@@ -117,14 +107,14 @@ const ChatSection = () => {
         ...prevChat,
         {
           sender: "bot",
-          text: "Sorry, I encountered an issue. Please try again later.",
+          message: "Sorry, I encountered an issue. Please try again later.",
         },
       ]);
     } finally {
       setLoading(false);
-      setUserInput("");
+      setUserInput(""); // Clear input field
     }
-  };
+  }, [userInput, loading, chatHistory, customPrompt, currentUser._id]);
 
   const usernameVariants = {
     hidden: { opacity: 0, x: -50 },
@@ -178,11 +168,10 @@ const ChatSection = () => {
             ref={index === chatHistory.length - 1 ? lastMessageRef : null}
             className={`mb-3 md:mb-4  md:p-5 p-3 ${
               message.sender === "user"
-                ? "bg-[#dff0e1] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
+                ? "bg-[#f4db79] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
                 : "bg-[#ede6ed] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
             }`}
           >
-            {/* Show the typing animation for the bot message */}
             <p className="sm:text-lg  text-sm ">
               {message.message || "no text available"}
             </p>
@@ -191,7 +180,7 @@ const ChatSection = () => {
 
         {loading && (
           <div className="items-center">
-            <SyncLoader color="#34495e" size={10} />
+            <SyncLoader color="#34495e" size={10} />  
           </div>
         )}
       </div>
