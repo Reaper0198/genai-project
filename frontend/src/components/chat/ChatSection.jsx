@@ -135,7 +135,7 @@ const ChatSection = () => {
   return (
     <div
       ref={chatContainerRef}
-      className="lg:w-[50rem] md:w-[40rem] sm:w-[30rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f4ded1] flex flex-col justify-between h-full"
+      className="lg:w-[50rem] md:w-[40rem] sm:w-[30rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f4ded1] flex flex-col justify-between h-full pt-24"
     >
 
       {chatHistory.length === 0 && (
@@ -185,7 +185,7 @@ const ChatSection = () => {
             }`}
           >
             {/* Show the typing animation for the bot message */}
-            <p className="sm:text-lg ">
+            <p className="sm:text-lg  text-sm ">
               {message.message || "no text available"}
             </p>
           </div>
