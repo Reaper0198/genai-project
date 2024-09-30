@@ -37,7 +37,7 @@ const MentalHealthIssues = () => {
       
 
   return (
-    <div className='h-[600px] bg-[#f6c899]'>
+    <div className='h-[600px] font-serif bg-[#f6c899]'>
         <div className='flex flex-col justify-center items-center p-10'>
             <h1 className='text-5xl items-center mb-16'>Mental Health Resources</h1>
             <div className='flex flex-row gap-4'>

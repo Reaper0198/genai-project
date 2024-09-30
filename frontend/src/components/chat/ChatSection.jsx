@@ -48,7 +48,7 @@ const ChatSection = () => {
     }
   }, [chatHistory]);
 
-  const handleSendMessage = async () => {
+    const handleSendMessage = async () => {
     if (!userInput.trim() || loading) return;
 
     setChatHistory((prevChat) => [
