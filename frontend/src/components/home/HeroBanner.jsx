@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbArrowRight } from "react-icons/tb";
 
+
 const HeroBanner = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   return (
-    <div className="bg-[#fef4ee] font-sans pt-28 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-[#f4ded1] font-sans pt-28 min-h-screen flex flex-col items-center justify-center">
       <div className="flex flex-col items-center text-center w-full px-8 max-w-6xl gap-5">
         <div className="mt-10 flex justify-center w-full">
           <img
