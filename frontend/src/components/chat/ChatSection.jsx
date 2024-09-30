@@ -49,7 +49,6 @@ const ChatSection = () => {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatHistory]);
-
   // // Typing animation function using setTimeout
   // const typeResponse = (text) => {
   //   let index = -1;
@@ -137,7 +136,6 @@ const ChatSection = () => {
       ref={chatContainerRef}
       className="lg:w-[50rem] md:w-[40rem] sm:w-[30rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f4ded1] flex flex-col justify-between h-full pt-24"
     >
-
       {chatHistory.length === 0 && (
         <div className="flex flex-col h-full justify-center items-center gap-2">
           <h1 className="md:text-6xl sm:text-4xl text-3xl font-semibold text-gray-800 flex  items-end">

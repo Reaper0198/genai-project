@@ -26,6 +26,7 @@ const ChatPage = () => {
         <ChatSection />
         </div>
         
+        
       </div>
     </div>
   );

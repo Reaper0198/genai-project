@@ -37,7 +37,7 @@ const ArticlePage = () => {
       variants={pageVariants} // The variants object controlling the animation
     >
         <div className='flex flex-col my-6 text-black'>
-            <h1 className='m-10 ml-0 text-6xl font-abold font-sans'>{item[1]}</h1>
+            <h1 className='m-10 ml-0 text-6xl font-abold font-serif'>{item[1]}</h1>
             <div className='w-full'>
                 <img className='md:w-[700px] aspect-w-16 aspect-h-9 mx-auto rounded-2xl' src={item[4]} alt="" />
             </div>
