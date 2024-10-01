@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-hot-toast";
-import girlImage from "../assets/profilePageGril.jpeg";
-import boyImage from "../assets/profilePageBoy.jpeg";
-import axios from "axios";
-import {
-  updateStart,
-  updateFailure,
-  updateSuccess,
-} from "../redux/user/userSlice";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-hot-toast';
+import girlImage from "../assets/profilePageGril.jpg";
+import boyImage from "../assets/profilePageBoy.jpg";
+import axios from 'axios';
+import { updateStart, updateFailure, updateSuccess } from '../redux/user/userSlice';
+
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
