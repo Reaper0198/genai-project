@@ -66,7 +66,7 @@ const SignUpPage = () => {
       isStudent: e.target.value === "true" ? true : false,
     });
   };
-
+  console.log(formData);
   return (
     <div className="font-serif min-h-screen  pt-32 p-6 bg-[#f4ded1] text-[#012f2c]">
       <motion.div
@@ -95,7 +95,7 @@ const SignUpPage = () => {
 
         <div className="flex-1">
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-            {["username", "email", "age", "gender", "password"].map(
+            {["username","name", "email", "age", "gender", "password"].map(
               (field, index) => (
                 <div className="flex flex-col" key={index}>
                   <label
