@@ -6,15 +6,14 @@ import arrow from "../../assets/arrow.gif";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
+import Sidebar from "./Sidebar";
 
-const ChatSection = () => {
+const ChatSection = ({ isOpen, setIsOpen, showSidebar }) => {
   const { currentUser } = useSelector((state) => state.user);
-  const [story, setStory] = useState(""); // Holds the AI-generated response
-  const [typedResponse, setTypedResponse] = useState(""); // For typing animation
-  const [loading, setLoading] = useState(false); // Loading state for fetching the AI response
-  const [userInput, setUserInput] = useState(""); // Holds the user's input
-  const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
-
+  // const [typedResponse, setTypedResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [userInput, setUserInput] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
   const customPrompt =
     "Provide empathetic advice and use emojis to show encouragement.";
   const lastMessageRef = useRef(null);
@@ -39,11 +38,6 @@ const ChatSection = () => {
     };
     fetchChatHistory();
   }, [currentUser._id]);
-
-  useEffect(() => {
-    console.log("Chat History (Updated):", chatHistory);
-  }, [chatHistory]);
-
   useEffect(() => {
     if (lastMessageRef.current && chatContainerRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
@@ -83,7 +77,6 @@ const ChatSection = () => {
         responseMimeType: "text/plain",
       };
 
-      // Prepare history in the format expected by GoogleGenerativeAI
       const history = chatHistory.map((message) => ({
         role: message.sender === "user" ? "user" : "model",
         parts: [{ text: message.message }],
@@ -92,7 +85,7 @@ const ChatSection = () => {
       const chatSession = model.startChat({
         generationConfig,
         history: [
-          ...history, // Include the entire chat history
+          ...history,
           {
             role: "user",
             parts: [{ text: userInput }],
@@ -112,9 +105,6 @@ const ChatSection = () => {
         ...prevChat,
         { sender: "bot", message: responseText },
       ]);
-      setStory(responseText);
-
-      // Save both user input and bot response in the database
       await axios.post("/chat/user-message", {
         message: userInput,
         userId: currentUser._id,
@@ -148,6 +138,13 @@ const ChatSection = () => {
       ref={chatContainerRef}
       className="lg:w-[50rem] md:w-[40rem] sm:w-[30rem] w-[20rem] max-w-full mx-auto p-6 bg-[#f4ded1] flex flex-col justify-between h-full pt-24"
     >
+      <Sidebar
+        showSidebar={showSidebar}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        chatHistory={chatHistory}
+        setChatHistory={setChatHistory}
+      />
       {chatHistory.length === 0 && (
         <div className="flex flex-col h-full justify-center items-center gap-2">
           <h1 className="md:text-6xl sm:text-4xl text-3xl font-semibold text-gray-800 flex  items-end">
