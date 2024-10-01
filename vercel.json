@@ -1,5 +1,11 @@
 {
   "buildCommand": "cd frontend && npm install && ./node_modules/vite/bin/vite.js build",
+  "builds": [
+    {
+      "src": "backend/index.js",
+      "use": "@vercel/node"
+    }
+  ],
   "outputDirectory": "frontend/dist",
   "framework": "vite",
   "rewrites": [
