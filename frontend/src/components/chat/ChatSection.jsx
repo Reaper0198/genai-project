@@ -207,8 +207,9 @@ const ChatSection = () => {
       <div className="relative p-4 w-full flex items-center">
         <input
           type="text"
-          className="bg-gray-300 p-3 pl-4 rounded-full w-full outline-none focus:ring-2 focus:ring-gray-500 text-gray-800 placeholder-gray-900 pr-12 shadow-lg"
+          className={`bg-gray-300 p-3 pl-4 rounded-full w-full outline-none ${loading?"cursor-not-allowed":""}   text-gray-800 placeholder-gray-900 pr-12 shadow-lg`}
           value={userInput}
+          disabled={loading}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="Type your message..."
           onKeyDown={(e) => {

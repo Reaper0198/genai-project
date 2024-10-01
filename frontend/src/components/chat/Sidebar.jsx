@@ -4,10 +4,14 @@ import { PiList } from "react-icons/pi";
 import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { signOut } from "../../redux/user/userSlice";
-const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
+import axios from "axios";
+
+export default function Sidebar({ showSidebar, isOpen, setIsOpen }) {
+
+  const [chatHistory, setChatHistory] = useState([]); // Holds the entire conversation
 const { currentUser } = useSelector((state) => state.user);
 
 useEffect(() => {
@@ -50,7 +54,6 @@ const useMediaQuery = (query) => {
   return matches;
 };
 
-export default function Sidebar({ showSidebar, isOpen, setIsOpen }) {
   // Custom prompt for the AI
   const userInput = chatHistory[0]?.message || "Welcome";
 
