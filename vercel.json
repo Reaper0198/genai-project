@@ -1,26 +1,11 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "cd frontend && npm install && ./node_modules/vite/bin/vite.js build",
+  "outputDirectory": "frontend/dist",
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "frontend/dist"
-      }
-    },
-    {
-      "src": "backend/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/dist/$1"
+      "source": "/api/(.*)",
+      "destination": "/backend/index.js"
     }
   ]
 }
