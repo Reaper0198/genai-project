@@ -8,7 +8,6 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const form = useRef(); // Create a reference for the form
   const location = useLocation().pathname.split("/")[1];
-
   if (location === "chat") {
     return null; // Don't render footer if on chat page
   }

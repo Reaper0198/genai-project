@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         
     },
+    profilePicture: {
+        type: String,
+        default: "https://f4.bcbits.com/img/0019281740_10.jpg",
+    },
     password: {
         type: String,
         required: true

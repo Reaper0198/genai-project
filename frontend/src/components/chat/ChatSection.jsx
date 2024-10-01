@@ -71,18 +71,40 @@ const ChatSection = () => {
       const combinedPrompt = `${previousMessages}\n${customPrompt}`;
 
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API);
-      const model = genAI.getGenerativeModel(
-        { model: "tunedModels/mental-health-model-v343l4826azy" },
-        {
-          temperature: 0.5,
-          maxTokens: 100,
-          responseLength: 1000,
-        }
-      );
+      const model = genAI.getGenerativeModel({
+        model: "tunedModels/mental-health-model-v343l4826azy",
+      });
 
-      const result = await model.generateContent(combinedPrompt);
+      const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType: "text/plain",
+      };
+
+      // Prepare history in the format expected by GoogleGenerativeAI
+      const history = chatHistory.map((message) => ({
+        role: message.sender === "user" ? "user" : "model",
+        parts: [{ text: message.message }],
+      }));
+
+      const chatSession = model.startChat({
+        generationConfig,
+        history: [
+          ...history, // Include the entire chat history
+          {
+            role: "user",
+            parts: [{ text: userInput }],
+          },
+        ],
+      });
+
+      const result = await chatSession.sendMessage(
+        userInput + "," + customPrompt
+      );
       const responseText = result.response
-        ? await result.response.text()
+        ? result.response.text()
         : "Sorry, I didn't understand that.";
 
       // Adding AI-generated message to chat history
@@ -92,7 +114,7 @@ const ChatSection = () => {
       ]);
       setStory(responseText);
 
-      // Save messages to database
+      // Save both user input and bot response in the database
       await axios.post("/chat/user-message", {
         message: userInput,
         userId: currentUser._id,
@@ -137,10 +159,7 @@ const ChatSection = () => {
               transition={{ duration: 0.9 }}
               className="ml-2 bg-gradient-to-r from-orange-400 to-orange-700 bg-clip-text text-transparent mr-1 "
             >
-              {currentUser.username.substring(
-                0,
-                currentUser.username.length - 4
-              )}
+              {currentUser.name}
             </motion.span>
           </h1>
           <h1 className="md:text-4xl sm:text-3xl text-2xl font-semibold text-gray-600 flex mt-3 ml-8 text-nowrap">
@@ -168,11 +187,11 @@ const ChatSection = () => {
             ref={index === chatHistory.length - 1 ? lastMessageRef : null}
             className={`mb-3 md:mb-4  md:p-5 p-3 ${
               message.sender === "user"
-                ? "bg-[#f4db79] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
-                : "bg-[#ede6ed] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
+                ? "bg-[#f3e5ac] text-gray-800 text-right rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl w-full"
+                : "bg-[#f6e6f6] text-gray-800 text-left rounded-tr-2xl rounded-br-2xl rounded-tl-2xl w-full"
             }`}
           >
-            <p className="sm:text-lg  text-sm ">
+            <p className="sm:text-lg  text-sm">
               {message.message || "no text available"}
             </p>
           </div>
@@ -185,10 +204,10 @@ const ChatSection = () => {
         )}
       </div>
 
-      <div className="p-4 flex justify-center items-center w-full">
+      <div className="relative p-4 w-full flex items-center">
         <input
           type="text"
-          className="bg-gray-300 p-3 rounded-xl flex-1 mr-2 outline-none focus:ring-2 focus:ring-gray-500 text-gray-800"
+          className="bg-gray-300 p-3 pl-4 rounded-full w-full outline-none focus:ring-2 focus:ring-gray-500 text-gray-800 placeholder-gray-900 pr-12 shadow-lg"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="Type your message..."
@@ -201,7 +220,7 @@ const ChatSection = () => {
         />
         <button
           onClick={handleSendMessage}
-          className="px-3 py-2 rounded-md text-gray-600 "
+          className={`absolute right-5 bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2 ${userInput==""?"hidden":"visible"}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +228,7 @@ const ChatSection = () => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="nd:size-8 size-7 hover:text-gray-800 active:text-gray-900"
+            className="sm:h-6 sm:w-6 h-5 w-5 text-gray-200"
           >
             <path
               strokeLinecap="round"
