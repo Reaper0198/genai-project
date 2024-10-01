@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import { signOut } from "../../redux/user/userSlice";
 import axios from "axios";
 
+
 export default function Sidebar({
   showSidebar,
   isOpen,
@@ -23,6 +24,7 @@ export default function Sidebar({
   const [chatTitle, setChatTitle] = useState("New Chat");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
 
   // Media query hook
   const useMediaQuery = (query) => {
@@ -42,6 +44,7 @@ export default function Sidebar({
   // Handle title update when sending a message
   const handleSendMessage = async () => {
     if (!chatHistory.length || chatTitle !== "New Chat") return;
+
 
     const userInput = chatHistory[0]?.message || "Welcome";
     const customPrompt =
