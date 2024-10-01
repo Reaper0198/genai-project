@@ -7,18 +7,11 @@ import { useSelector } from "react-redux";
 
 const ChatPage = () => {
   const [isOpen, setIsOpen] = useState(true);
-
   const showSidebar = () => {
     setIsOpen(!isOpen);
   };
   return (
     <div className="min-h-screen max-h-full  w-screen max-w-full  bg-[#f4ded1] text-gray-200 flex">
-      <Sidebar
-        showSidebar={showSidebar}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-
       {/* Main Content */}
       <div
         className={`flex-1 font-serif flex flex-col transition-all duration-300 ease-in-out w-full`}
@@ -30,7 +23,11 @@ const ChatPage = () => {
             isOpen === true ? "sm:pl-[16rem]" : "pl-0"
           }  w-full`}
         >
-          <ChatSection />
+          <ChatSection
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            showSidebar={showSidebar}
+          />
         </div>
       </div>
     </div>
