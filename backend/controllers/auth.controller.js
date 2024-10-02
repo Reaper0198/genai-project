@@ -59,6 +59,8 @@ export const SignIn = async (req, res, next) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
+      secure:true,
+      sameSite:"none"
     });
 
     // Send response with the user data (excluding password)
