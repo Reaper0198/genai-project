@@ -8,7 +8,6 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const form = useRef(); // Create a reference for the form
   const location = useLocation().pathname.split("/")[1];
-
   if (location === "chat") {
     return null; // Don't render footer if on chat page
   }
@@ -85,16 +84,19 @@ const Footer = () => {
       <div className="font-semibold text-[#fbf7f0] font-serif flex-col mx-auto md:flex-row flex justify-center mt-6 gap-10 md:gap-40">
         <div>
           <ul className="flex flex-col gap-2">
-            <Link className="hover:text-[#e0bf40] hover:underline font-bold text-xl mb-2">
+            <Link
+              to="/about"
+              className="hover:text-[#e0bf40] hover:underline font-bold text-xl mb-2"
+            >
               About Us
             </Link>
-            <Link className="hover:text-[#e0bf40] hover:underline">
+            <Link to="/about" className="hover:text-[#e0bf40] hover:underline">
               Meet Our Team
             </Link>
-            <Link className="hover:text-[#e0bf40] hover:underline">
+            <Link to="/about" className="hover:text-[#e0bf40] hover:underline">
               Our Story
             </Link>
-            <Link className="hover:text-[#e0bf40] hover:underline">
+            <Link to="/about" className="hover:text-[#e0bf40] hover:underline">
               Advisory Council
             </Link>
           </ul>
@@ -117,10 +119,16 @@ const Footer = () => {
         </div>
         <div>
           <ul className="flex flex-col gap-2">
-            <Link className="hover:text-[#e0bf40] hover:underline font-bold text-xl mb-2">
+            <Link
+              to="/contact"
+              className="hover:text-[#e0bf40] hover:underline font-bold text-xl mb-2"
+            >
               Get In Touch
             </Link>
-            <Link className="hover:text-[#e0bf40] hover:underline">
+            <Link
+              to="/contact"
+              className="hover:text-[#e0bf40] hover:underline"
+            >
               Contact Us
             </Link>
             <Link className="hover:text-[#e0bf40] hover:underline font-extralight flex gap-1 text-sm">

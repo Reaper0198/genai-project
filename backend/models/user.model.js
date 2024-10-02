@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    name: {
+        type: String,
+        required: true,
+    },  
     email: {
         type: String,
         required: true,
@@ -17,6 +21,10 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number,
         
+    },
+    profilePicture: {
+        type: String,
+        default: "https://f4.bcbits.com/img/0019281740_10.jpg",
     },
     password: {
         type: String,

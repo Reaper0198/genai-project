@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import image from "../assets/sign-in-page.jpeg";
+import image from "../assets/sign-in-page.jpg";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,13 +33,11 @@ const SignInPage = () => {
       dispatch(signInStart());
       const res = await axios.post("/auth/sign-in", formData,{withCredentials:true});
       const data = res.data;
-      console.log(data);
         if (res.status === 200) {
             toast.success("Sign in successful!");
             dispatch(signInSuccess(data));
             navigate('/');
         } else {
-          console.log(data);
           toast.error(data.message);
             dispatch(signInFailure(data.message));
         }
@@ -90,7 +88,7 @@ const SignInPage = () => {
                 </label>
                 <input
                   type={field === "password" ? "password" : "email"}
-                  placeholder={`${field}...`}
+                  placeholder={`Enter you ${field}`}
                   id={field}
                   value={formData[field]}
                   onChange={handleChange}

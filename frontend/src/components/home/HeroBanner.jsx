@@ -1,9 +1,10 @@
 import React from "react";
-import image from "../../assets/herobanner.jpeg";
+import image from "../../assets/herobanner.jpg";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbArrowRight } from "react-icons/tb";
+
 
 const HeroBanner = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,7 +21,7 @@ const HeroBanner = () => {
         </div>
         {/* Text Section */}
         <div className="w-full">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h1 className="text-4xl md:text-5xl font-serif   font-bold leading-tight">
             Your{" "}
             <span className="italic font-sans font-medium">mental health</span>{" "}
             matters. <br />
@@ -30,7 +31,7 @@ const HeroBanner = () => {
           </h1>
           <p className="my-6 font-serif text-lg md:text-xl">
             Where trust meets care. Empowering your mental well-being with
-            unwavering support.
+            Generative AI
           </p>
           <div className="flex justify-center items-center">
 
