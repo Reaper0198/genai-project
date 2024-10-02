@@ -7,7 +7,6 @@ import chatRouter from "./routes/chat.route.js";
 import cors from 'cors';
 dotenv.config();
 const mongoURL = process.env.MONGO_URL;
-// console.log(mongoURL);  
 mongoose.connect(mongoURL)
   .then(() => console.log('MongoDB connected'))
   .catch((error) => console.error('MongoDB connection error:', error));
@@ -16,8 +15,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 
-app.use('/api/auth', authRouter);
-app.use('/api/chat', chatRouter);
+app.use('/auth', authRouter);
+app.use('/chat', chatRouter);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
